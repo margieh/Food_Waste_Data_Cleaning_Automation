@@ -1,8 +1,9 @@
 # _Pipeline.py_
 
-#### Simple python data processing pipeline
+#### Description
+Simple python data processing pipeline
 
-Chosen Approach
+#### Chosen Approach
 This custom python data pipeline allows users to perform a selection of predefined data cleaning and processing steps. Those steps include, but are not limited to: 
 Load a CSV file from a user-specified directory and remove the index
 Create and validate the schema of the dataset
@@ -11,9 +12,22 @@ Users can elect to run the script by passing --merge True, which will concatenat
 
 #### Architecture 
 A basic python class object holds a selection of methods that can be used to clean and process input data. 
-The methods are then chained together using python's built in 
+The methods are then chained together using python's built in .pipe functionality e.g.: 
 
-#### How to run the data pipeline
+```
+pipeline = CleaningPipeline()
+
+cleaned_data = (
+            pipeline.open_csv()
+            .pipe(pipeline.validate_farm_data_schema)
+            .pipe(pipeline.lowercase_str_cols)
+            .pipe(pipeline.drop_nan_rows_in_required_cols)
+            .pipe(pipeline.make_hash_id, HASH_COL_LS)
+            .pipe(pipeline.remove_dups)
+        )
+```
+
+#### Run the Pipepline script
 * clone this repo
 * navigate to the root directory
 * To run the pipeline using a sample file stored at "src/raw" and merge all processed files: ```$make run_merge```
